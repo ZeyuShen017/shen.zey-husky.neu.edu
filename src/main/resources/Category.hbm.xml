@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="Pojo.Category" table="category" schema="netshop">
+        <id name="cid" column="cid"/>
+        <property name="name" column="name"/>
+        <property name="description" column="description"/>
+        <set name="booksByCid" cascade="save-update,delete" inverse="true">
+            <key>
+                <column name="cid"/>
+            </key>
+            <one-to-many not-found="ignore" class="Pojo.Books"/>
+        </set>
+    </class>
+</hibernate-mapping>

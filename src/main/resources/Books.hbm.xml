@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="Pojo.Books" table="books" schema="netshop">
+        <id name="bid" column="bid"/>
+        <property name="title" column="title"/>
+        <property name="price" column="price"/>
+        <property name="author" column="author"/>
+        <property name="isbn" column="ISBN"/>
+        <many-to-one name="categoryByCid" class="Pojo.Category">
+            <column name="cid"/>
+        </many-to-one>
+        <set name="orderItemsByBid" cascade="save-update,delete" inverse="true">
+            <key>
+                <column name="bid"/>
+            </key>
+            <one-to-many not-found="ignore" class="Pojo.OrderItem"/>
+        </set>
+    </class>
+</hibernate-mapping>
