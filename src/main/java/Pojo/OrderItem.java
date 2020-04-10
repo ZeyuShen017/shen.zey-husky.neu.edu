@@ -6,7 +6,6 @@ import javax.persistence.*;
 public class OrderItem {
     private int itemId;
     private int quantity;
-    private Orders orderByOid;
     private Books booksByBid;
     private Orders ordersByOid;
 
@@ -52,15 +51,7 @@ public class OrderItem {
         return result;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "oid", referencedColumnName = "oId", nullable = false)
-    public Orders getOrderByOid() {
-        return orderByOid;
-    }
 
-    public void setOrderByOid(Orders orderByOid) {
-        this.orderByOid = orderByOid;
-    }
 
     @ManyToOne
     @JoinColumn(name = "bid", referencedColumnName = "bid", nullable = false)

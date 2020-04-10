@@ -7,10 +7,10 @@
     <class name="Pojo.OrderItem" table="orderItem" schema="netshop">
         <id name="itemId" column="itemId"/>
         <property name="quantity" column="quantity"/>
-        <many-to-one name="orderByOid" cascade="save-update, delete" class="Pojo.Orders">
+        <many-to-one name="ordersByOid" lazy="false" cascade="save-update, delete" class="Pojo.Orders">
             <column name="oid"/>
         </many-to-one>
-        <many-to-one name="booksByBid" class="Pojo.Books">
+        <many-to-one name="booksByBid" lazy="false" cascade="save-update, delete" class="Pojo.Books">
             <column name="bid"/>
         </many-to-one>
     </class>

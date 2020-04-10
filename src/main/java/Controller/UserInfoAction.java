@@ -62,8 +62,8 @@ public class UserInfoAction extends BaseAction {
 			return "error";
 		}
 	}
-	@RequestMapping("/login.action")
 
+	@RequestMapping("/login.action")
 	public String login(String username, String password, HttpServletResponse response, Model model, HttpSession session) throws IOException, Exception{//��¼
 		//Map<String,Object> session=ActionContext.getContext().getSession();
 		//Userinfo userinfo=(Userinfo)context.getBean("userinfo");
@@ -79,7 +79,7 @@ public class UserInfoAction extends BaseAction {
 		//System.out.println("cbuey"+result.getUsername());
 		if(result!=null&&result.getRright().equals("1")){
 			model.addAttribute("user", result);
-			response.sendRedirect("http://localhost:8080/User/ListUsers.action");
+			response.sendRedirect("http://localhost:8080/administrator.jsp");
 			return null;
 		}else if(result!=null&&result.getRright().equals("0")){
 			model.addAttribute("user", result);
@@ -108,6 +108,12 @@ public class UserInfoAction extends BaseAction {
 		}
 		
 	}
+	@RequestMapping("logout.action")
+	public String Logout(HttpSession session){
+
+		session.removeAttribute("user");
+		return "login";
+	}
 	
 	public String searchUser(Model model, HttpSession session) throws IOException, Exception{
 		
@@ -120,7 +126,6 @@ public class UserInfoAction extends BaseAction {
 		
 		//UserInfoDao dao=(UserInfoDao)context.getBean("userinfoDAO");
 		Userinfo result=dao.searchUserByName(getUsername());
-		System.out.println("cbuey"+result.getUsername());
 		if(result!=null){
 			model.addAttribute("user", result);
 			return "SUCCESS";

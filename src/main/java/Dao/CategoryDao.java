@@ -120,6 +120,30 @@ public class CategoryDao {
     }
 
 
+    public Category searchCategoryByName(String name) {
+
+        Query q = null;
+        Category ct=null;
+
+        try {
+            beginTransaction();
+            String hql="FROM Category c where c.name= :name";
+            q = getSession().createQuery(hql);//query = "SELECT * FROM Category ";
+            q.setString("name",name);
+
+            ct = (Category) q.list().get(0);
+
+            commit();
+        } catch (HibernateException e) {
+            e.printStackTrace();
+            rollbackTransaction();
+        } finally {
+            close();
+        }
+        return ct;
+    }
+
+
     public int AddCategory(Category ct) {
         int rs = 0;
         try {

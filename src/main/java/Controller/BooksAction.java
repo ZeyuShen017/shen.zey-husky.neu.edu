@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import Dao.CategoryDao;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -92,21 +93,30 @@ public class BooksAction extends BaseAction {
 	public void setCart(Map cart) {
 		this.cart = cart;
 	}
-
-	public String addBooks() {// 添加
-		if (dao.AddBook(getBooks()) == 1) {
-			return "SUCCESS";
+@RequestMapping("addBook.action")
+	public String addBooks(String title, String isbn, String author, String price, String category) {// 添加
+		Books bk = new Books();
+		bk.setCategoryByCid(new CategoryDao().searchCategoryByName(category));
+		bk.setTitle(title);
+		bk.setIsbn(isbn);
+		bk.setPrice(Double.parseDouble(price));
+		bk.setAuthor(author);
+		if (dao.AddBook(bk) == 1) {
+			return "success";
 		} else {
-			return "ERROR";
+			return "error";
 		}
 	}
 
 @RequestMapping("/all.action")
-	public String listBooks(Model model) {// 列出全部书
-		System.out.println("123");
-		list = dao.getBookList();
-		model.addAttribute("booklist",list);
-
+	public String listBooks(Model model, String category) {// 列出全部书
+		if(category==null) {
+			list = dao.getBookList();
+			model.addAttribute("booklist", list);
+		}else{
+			list=dao.searchBooksByCategory(category);
+			model.addAttribute("booklist", list);
+		}
 		return "listBooks";
 	}
 

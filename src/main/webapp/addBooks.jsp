@@ -1,5 +1,4 @@
-<%@ page language="java" pageEncoding="UTF-8"%>
-<%@ taglib prefix="s" uri="/struts-tags"  %>
+<%@ page language="java" pageEncoding="UTF-8" isELIgnored="false" %>
 
 <html>
 <head>
@@ -7,18 +6,28 @@
 
 <s:head/> 
 </head>
-<body><h1>添加图书</h1>
+<body><h1>Add Books</h1>
+<input id="user" type="hidden" value="${sessionScope.user.rright}"/>
+<form  action="../Book/addBook.action">
+   <label>Title&nbsp&nbsp&nbsp&nbsp</label><input type="text" name="title"/><br>
+   <label>ISBN&nbsp&nbsp&nbsp&nbsp</label><input type="text"name="isbn" /><br>
+   <label>Author&nbsp&nbsp</label><input type="text"name="author"/><br>
+   <label>Price&nbsp&nbsp&nbsp&nbsp</label><input type="text"name="price"/><br>
+   <label>Category</label>
+   <select>
+      <option name="category" value="Computer">Computer&nbsp;&nbsp;
+      </option>
+      <option name="category" value="Art">Art&nbsp;&nbsp;
+      </option>
+   </select><br>
+   <input type="submit"/>
+</form>
+<script type="application/javascript">
+   if(document.getElementById("user").value!=="1"){
+      alert("You are not the adminstrator");
+      window.location.href="login.jsp"
 
-<font><s:text name="addBooks"/></font>
-<table>
-<s:form id="id" action="addBooks">
-   <s:textfield name="books.title" key="books.title"/>
-   <s:textfield name="books.isbn" key="books.isbn"/>
-   <s:textfield name="books.author" key="books.author"/>
-   <s:textfield name="books.price" key="books.price"/>
-   <s:textfield name="books.categorys.cid" key="books.categorys.cid"/>
-   <s:submit key="add" align="center"/>
-</s:form>
-</table>
+   }
+</script>
 </body>
 </html>

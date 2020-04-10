@@ -1,16 +1,25 @@
-<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
-<%@ taglib prefix="s" uri="/struts-tags"%>
+<%@ page language="java" import="java.util.*" pageEncoding="utf-8" isELIgnored="false" %>
+
 <html>
 <head>
 <tltle></tltle>
-<s:head/>
+
 </head>
-<body><h1><s:text name="searchOrderInfo"/></h1>
+<body><h1>Find Order By Name</h1>
+<input id="user" type="hidden" value="${sessionScope.user.rright}"/>
 <table width="40%" height="76" border="0">
-  <s:form id="id" action="findOrderByUser">
-    <s:textfield name="username" key="username"/>
-    <s:submit key="findOrderByUser" align="center"/>
-  </s:form>
+  <form id="id" action="/Order/listOrder.action">
+    <label>Username:  </label><input type="text" name="username"/>
+    <input type="submit"/>
+  </form>
 </table>
+
+<script type="application/javascript">
+  if(document.getElementById("user").value!=="1"){
+    alert("You are not the adminstrator");
+    window.location.href="login.jsp"
+
+  }
+</script>
   </body>
 </html>

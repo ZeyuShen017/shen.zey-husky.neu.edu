@@ -5,10 +5,10 @@
   <title></title>
   </head> 
   <body>
-    
-     <table border="1">
-         <tr><th><label>Username</label></th><th><label>Right</label>
-    </th></tr>
+  <input id="user" type="hidden" value="${sessionScope.user.rright}"/>
+
+  <table border="1">
+      <th>Username</th><th>Right</th><th>Action</th></tr>
     <c:forEach items="${list}" var="u">
     <form>
     <tr>
@@ -28,5 +28,14 @@
   	<button onClick="window.open('sell.jsp')">sale</button>
 
   	<button onClick="window.open('findOrderByName.jsp')">earchOrder</button>
+
+  <script type="application/javascript">
+      if(document.getElementById("user").value!=="1"){
+          alert("You are not the adminstrator");
+          window.location.href="login.jsp"
+
+      }
+  </script>
   </body>
+
 </html>

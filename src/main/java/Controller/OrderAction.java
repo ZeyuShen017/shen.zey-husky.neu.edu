@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import Dao.OrderDao;
+import Dao.OrderItemDao;
 import Dao.UserinfoDao;
 import Pojo.*;
 import org.springframework.stereotype.Controller;
@@ -114,7 +115,7 @@ public class OrderAction extends BaseAction {
 					OrderItem orderitem=new OrderItem();
 					orderitem.setItemId((int) new Date().getTime()+counter);
 					orderitem.setBooksByBid(item.getBooks());
-					orderitem.setOrderByOid(order);
+					orderitem.setOrdersByOid(order);
 					orderitem.setQuantity(item.getQuantity());
 					list.add(orderitem);
 					counter++;
@@ -139,51 +140,47 @@ public class OrderAction extends BaseAction {
 		}
 		
 	}
-	
-	public String listOrders(Model model, HttpSession session) throws IOException, Exception{//查询当前用户所有订单
+	@RequestMapping("listOrder.action")
+	public String listOrders(Model model, HttpSession session, String username) throws IOException, Exception{//查询当前用户所有订单
 		//Map<String,Object>session=ActionContext.getContext().getSession();
-		user=(Userinfo)session.getAttribute("user");
-		
+
+		List<Orders> Orderlist;
 		try{
 			//OrderDao dao=new OrderDao();
-			list=this.getOrderService().listOrders(user);
+			if(username!=null){
+				user=new UserinfoDao().searchUserByName(username);
+				Orderlist = (List<Orders>) new OrderDao().getUserOrders(user.getUserId());
+				model.addAttribute("orders", Orderlist);
+			}else {
+				user = (Userinfo) session.getAttribute("user");
+				Orderlist = (List<Orders>) new OrderDao().getUserOrders(user.getUserId());
+				model.addAttribute("orders", Orderlist);
+			}
 			
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		
-		
-		return "SUCCESS";
+		return "listOrders";
 	}
 	
 	
-	
-	public String listAllOrder(Model model, HttpSession session) throws IOException, Exception{//查看此订单详细信息
+	@RequestMapping("listOrderItem.action")
+	public String listOrderitem(Model model, HttpSession session, String oid) throws IOException, Exception{//查看此订单详细信息
 		
 		//Map<String,Object>session=ActionContext.getContext().getSession();
 		//user=(Userinfo)session.get("user");
-		
+		List<OrderItem> itemList;
 		try{
-			/*OrderitemDao dao=new OrderitemDao();
-			
-			Order or=new Order();
-			
-			or.setOid(getOid());
-			
-			System.out.println("nui"+getOid());*/
-			
-			
-			
-			list=this.getOrderitemService().listOrders(getOid());
-			
-			
-			
+			OrderItemDao dao=new OrderItemDao();
+			itemList=dao.searchOrderById(Long.parseLong(oid));
+
+			model.addAttribute("list",itemList);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
 		
 		
-		return "SUCCESS";
+		return "listOrderItem";
 	}
 	
 	
@@ -206,13 +203,17 @@ public class OrderAction extends BaseAction {
 		}
 		return "SUCCESS";
 	}
-
-	public String getSellNum(){//销售额
-		
+	@RequestMapping("sell.action")
+	public String getSellNum(Model model){//销售额
 		//OrdersDao orderDao=(OrdersDao)context.getBean("OrderDAO");
-		list=orderDao.sellNum();
+		double total=0;
+		total=orderDao.sellNum();
+		List<Orders> list=orderDao.getOrderList();
+		model.addAttribute("AllOrder",list);
+		model.addAttribute("SellTotal", total);
 		//System.out.println("nuciwe"+list.get(0).toString());
 		sellnum=list.toString();
-		return "SUCCESS";
+		System.out.println(sellnum);
+		return "sell";
 	}
 }

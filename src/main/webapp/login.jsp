@@ -34,10 +34,10 @@
 					<input type="password" name="password"></input>
 				</div>
 				<div class="fg_box">
-					<a class="fg" href="#">忘记登陆密码？</a> <a class="treg" href="#">立即注册</a>
+					 <a class="treg" href="addUsers.jsp">Sign up</a>
 				</div>
 				<div class="sub_box">
-					<input type="submit" value="登陆" />
+					<input type="submit" value="Sign in" />
 				</div>
 			</form>
 

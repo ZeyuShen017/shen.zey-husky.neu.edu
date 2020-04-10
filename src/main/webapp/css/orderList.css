@@ -1,0 +1,43 @@
+.orderlist_title{
+    text-align: center;
+    font-size: large;
+    font-weight:bolder;
+    background-color: #f4f4f4;
+    width: 35%;
+    margin: 0 auto;
+}
+
+.orderlist_container{
+    text-align: center;
+    background-color: #f4f4f4;
+    width: 80%;
+    margin: 10px auto;
+}
+
+.orderlist_header div{
+    font-weight: bold;
+    text-align: center;
+    float: left;
+    margin-left: 170px;
+}
+
+.orderlist_content{
+    width: 100%;
+    padding: 0px;
+    margin: 0px;
+}
+
+.orderlist_content div{
+    font-weight: bold;
+    text-align: center;
+    float: left;
+    margin-left: 175px;
+}
+.formCenter {
+    width: 30%;
+    margin: 0 auto;
+    border: solid 1px;
+    text-align: center;
+
+}
+

@@ -108,22 +108,16 @@ public class OrderDao {
         }
         return od;
     }
-    public List sellNum(){//计算销售额
+    public double sellNum(){//计算销售额
         Query q = null;
-        List<Orders> od=null;
-
-        //String hql="select sum(total) from Order";
-        //List list=this.getHibernateTemplate().find(hql);
-        //Iterator it=list.iterator();
-       // System.out.println("nuciwe"+list.get(0).toString());
-      //  return list;
+        double od=0;
         try {
             beginTransaction();
             String hql="select sum(total) from Orders";
             q = getSession().createQuery(hql);//query = "SELECT * FROM Category ";
             //q.setInteger("ID",id);
 
-            od =  q.list();
+            od = (double) q.list().get(0);
 
             commit();
         } catch (HibernateException e) {

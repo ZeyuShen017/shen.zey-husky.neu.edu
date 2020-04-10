@@ -49,9 +49,9 @@
 
 		<div class="top_center">
 			<ul class="top_bars">
-				<li><a href="../Book/all.action">继续购物</a>|</li>
-				<li><a href="listOrder.action">我的订单<span class="jt_down"></span></a>|</li>
-				<% out.print(session.getAttribute("cart")); %>
+				<li><a href="../Book/all.action">Continue Shoppong <span class="jt_down"></span></a>|</li>
+				<li><a href="../User/logout.action">Sign Out<span class="jt_down"></span></a>|</li>
+				<li><a href="../Order/listOrder.action">My Order<span class="jt_down"></span></a>|</li>
 			</ul>
 		</div>
 	</div>

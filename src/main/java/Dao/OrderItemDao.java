@@ -87,16 +87,16 @@ public class OrderItemDao {
         }
         return OrderList;
     }
-    public List<OrderItem> searchOrderById(int oid) {
+    public List<OrderItem> searchOrderById(long oid) {
 
         Query q = null;
         List<OrderItem> oi=null;
 
         try {
             beginTransaction();
-            String hql="FROM OrderItem oi where oi.itemId= :ID";
+            String hql="FROM OrderItem oi where oi.ordersByOid.oId= :ID";
             q = getSession().createQuery(hql);//query = "SELECT * FROM Category ";
-            q.setInteger("ID",oid);
+            q.setLong("ID",oid);
 
             oi = q.list();
 

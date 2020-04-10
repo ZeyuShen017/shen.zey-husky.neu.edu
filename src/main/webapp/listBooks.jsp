@@ -1,24 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8" isELIgnored="false"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<!-- <html>
-  <head>
-  </head>
-  <body><h1>图书列表</h1>
-    <table border="1">
-    <tr><th>书名</th><th>ISBN号</th><th>价格</th><th>作者</th></tr>
-    <s:iterator value="list">
-    <tr><td><a href="viewDetails.action?bid=<s:property value="bid"/>">
-    <s:property value="title"/></a></td>
-    <td><s:property value="isbn"/></td>
-    <td><s:property value="price"/></td>
-    <td><s:property value="author"/></td>
-    <td><a href="viewCategorys.action?cid=<s:property value="Categorys.cid"/>">
-    <s:property value="Categorys.cid"/></td>
-    </tr>
-    </s:iterator>
-    </table>
-  </body>
-</html>-->
+
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -31,16 +13,12 @@
 <link rel="stylesheet" href="../css/table.css" />
 </head>
 <body>
-${requestScope.booklist}
-${2000 % 20}
+
 	<!--顶部-->
 	<div class="top">
 		<div class="top_center">
 			<ul class="top_bars">
-				<li><a href="listBooks.action">继续购物</a>|</li>
-				<li><a href="listOrder.action">我的订单<span class="jt_down"></span></a>|</li>
-				<% out.print( request.getAttribute("booklist"));
-					out.print(session.getAttribute("user"));%>
+				<li><a href="../Order/listOrder.action">我的订单<span class="jt_down"></span></a>|</li>
 			</ul>
 		</div>
 	</div>
@@ -54,9 +32,6 @@ ${2000 % 20}
 
 		</div>
 		<div class="h3_right">
-			<div class="myyy">
-				个人信息 <span class="sj_down"></span>
-			</div>
 			<div class="tsc"><a href="http://localhost:8080/viewCarts.jsp">
 				View Carts <span class="sj_right"></span></a>
 			</div>
@@ -75,7 +50,16 @@ ${2000 % 20}
 		
 		<div class="c4_b2">
 			<h1 class="c4_b2_x">
-				<a href="#">计算机类&nbsp;&nbsp;></a> <span><a href="#">计算机类</a></span>
+				<select onChange=javascript:window,location.href=this.options[this.selectedIndex].value >
+					<option selected>Category
+					</option>
+					<option value="all.action">All&nbsp;&nbsp;
+					</option>
+				<option value="all.action?category=Computer">Computer&nbsp;&nbsp;
+				</option>
+					<option value="all.action?category=Art">Art&nbsp;&nbsp;
+					</option>
+				</select>
 			</h1>
 
 			<!-- <ul class="c4_b2_y">

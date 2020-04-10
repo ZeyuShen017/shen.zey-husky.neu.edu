@@ -97,6 +97,29 @@ public class BooksDao {
         return bk;
     }
 
+    public List<Books> searchBooksByCategory(String category) {
+
+        Query q = null;
+        List<Books> bk=null;
+
+        try {
+            beginTransaction();
+            String hql="FROM Books b where b.categoryByCid.name= :name";
+            q = getSession().createQuery(hql);//query = "SELECT * FROM Books ";
+            q.setString("name",category);
+
+            bk = q.list();
+
+            commit();
+        } catch (HibernateException e) {
+            e.printStackTrace();
+            rollbackTransaction();
+        } finally {
+            close();
+        }
+        return bk;
+    }
+
 
     public int AddBook(Books bk) {
         int rs = 0;

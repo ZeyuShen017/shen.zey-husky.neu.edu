@@ -27,6 +27,13 @@ public class orderTest {
         tx = session.beginTransaction();
     }
 
+    @Test
+    public void testitem(){
+
+        System.out.println(new OrderItemDao().searchOrderById(Long.parseLong("20200409032804057")));
+    }
+
+
     //增加
     @Test
     public void test1234() {
@@ -35,9 +42,9 @@ public class orderTest {
         SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMddhhmmssSSS");
         System.out.println(Long.parseLong(sdf.format(System.currentTimeMillis()).toString()+1));
         od.setoId(Long.parseLong(sdf.format(System.currentTimeMillis()).toString()));
-        System.out.println("abcd");
+        System.out.println("abcdefg");
         od.setUserinfoByUserId(new UserinfoDao().searchUserById(1));
-        od.setZipcode("21448");
+        od.setZipcode("1128");
         od.setTotal(122);
         //session.save(od);
         Collection<OrderItem> list = new HashSet<OrderItem>();
@@ -45,13 +52,13 @@ public class orderTest {
         oi1.setItemId((int) new Date().getTime());
         oi1.setBooksByBid(new BooksDao().searchBookById(1));
         oi1.setQuantity(1);
-        oi1.setOrderByOid(od);
+        oi1.setOrdersByOid(od);
 
         OrderItem oi2 = new OrderItem();
         oi2.setItemId((int) new Date().getTime());
         oi2.setBooksByBid(new BooksDao().searchBookById(2));
         oi2.setQuantity(1);
-        oi2.setOrderByOid(od);
+        oi2.setOrdersByOid(od);
         //new OrderItemDao().AddOrderItem(oi1);
         list.add(oi1);
         list.add(oi2);

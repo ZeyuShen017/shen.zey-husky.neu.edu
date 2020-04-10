@@ -1,37 +1,5 @@
-<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ taglib prefix="s" uri="/struts-tags" %>
-<%
-String path = request.getContextPath();
-String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-%>
-
-<!-- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-  <head>
-    <base href="<%=basePath%>">
-    <title></title>
-    <s:head/>
-  </head>
-  
-  <body>
-    <h1>用户订单</h1>
-     <table border="1">
-    	<tr><th>订单号</th><th>用户姓名</th><th>地址</th><th>邮编</th><th>总金额</th></tr>
-    	<s:iterator value="list">
-    		<tr><td><a href="listAllOrder.action?oid=<s:property value="oid"/>">
-    		<s:property value="oid"/></a>
-    		</td>
-    		<td><s:property value="userinfo.username"/></td>
-    		<td><s:property value="address"/></td>
-    		<td><s:property value="zipcode"/></td>
-    		<td><s:property value="total"/></td>
-    		</tr>
-    	</s:iterator>
-    </table>
-  </body>
-</html>-->
-
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8" isELIgnored="false" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -39,59 +7,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 	<title>购物车页面</title>
-<link rel="stylesheet" href="css/fullCar.css" />
-<link rel="stylesheet" href="css/common.css"/>
-<link rel="stylesheet" href="css/style.css" />
-<link rel="stylesheet" href="css/icons.css" />
-<link rel="stylesheet" href="css/table.css" />
+<link rel="stylesheet" href="../css/fullCar.css" />
+<link rel="stylesheet" href="../css/common.css"/>
+<link rel="stylesheet" href="../css/style.css" />
+<link rel="stylesheet" href="../css/icons.css" />
+<link rel="stylesheet" href="../css/table.css" />
+	<link rel="stylesheet" href="../css/orderList.css" />
 
-<style>
-	.orderlist_title{
-		text-align: center;
-		font-size: large;
-		font-weight:bolder;
-		background-color: #f4f4f4;
-		width: 80%;
-		margin: 0 auto;
-	}
-	
-	.orderlist_container{
-		text-align: center;
-		background-color: #f4f4f4;
-		width: 80%;
-		margin: 10px auto;
-	}
-	
-	.orderlist_header div{
-		font-weight: bold;
-		text-align: center;
-		float: left;
-		margin-left: 170px;
-	}
-	
-	.orderlist_content{
-		width: 100%;
-		padding: 0px;
-		margin: 0px;
-	}
-	
-	.orderlist_content div{
-		font-weight: bold;
-		text-align: center;
-		float: left;
-		margin-left: 175px;
-	}
-	
-</style>
 
-</head>
 <body>
+	<input type="hidden" id="username"  value="${user.username}">
 	<!--顶部-->
 	<div class="top">
     	<div class="top_center">
             <ul class="top_bars">
             	
-                <li><a href="listBooks.action">继续购物<span class="jt_down"></span></a>|</li>
+                <li><a href="../Book/all.action">继续购物<span class="jt_down"></span></a>|</li>
             
             </ul>
         </div>
@@ -108,22 +39,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <!--中间部分div-->
 <div class="empty">
 	
-	<div class="orderlist_title">订单列表</div>
-	<div style="margin:auto;">
-	<table border="2">
-    	<tr><th>订单号</th><th>用户姓名</th><th>地址</th><th>邮编</th><th>总金额</th></tr>
-    	<s:iterator value="list">
-    		<tr><td><a href="listAllOrder.action?oid=<s:property value="oid"/>">
-    		<s:property value="oid"/></a>
+	<div class="orderlist_title">Order List</div>
+
+	<table border="2" class="formCenter">
+    	<tr><th>Order ID</th><th>Username</th><th>Address</th><th>Zipcode</th><th>Total</th></tr>
+    	<c:forEach items="${orders}" var="list">
+    		<tr><td><a href="listOrderItem.action?oid=${list.oId}">
+					${list.oId}</a>
     		</td>
-    		<td><s:property value="userinfo.username"/></td>
-    		<td><s:property value="address"/></td>
-    		<td><s:property value="zipcode"/></td>
-    		<td><s:property value="total"/></td>
+    		<td>${user.username}</td>
+    		<td>${list.address}</td>
+    		<td>${list.zipcode}</td>
+    		<td>${list.total}</td>
     		</tr>
-    	</s:iterator>
+		</c:forEach>
     </table>
-    </div>
+
 	
 </div>
      <!--脚部-->
@@ -136,6 +67,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 <div class="ts4">优质服务 以客为尊</div>
             </div>
         </div>
-        
+	</div>
+<script type="application/javascript">
+	if(document.getElementById("username").value===""){
+		alert("Please Sign In");
+		window.location.href="../login.jsp"
+
+	}
+</script>
 </body>
 </html>
