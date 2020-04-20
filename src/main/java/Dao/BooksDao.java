@@ -14,11 +14,11 @@ import Pojo.Books;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import Pojo.Userinfo;
+import org.hibernate.*;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Restrictions;
 
 
 /**
@@ -74,18 +74,45 @@ public class BooksDao {
         }
         return BooksList;
     }
-    public Books searchBookById(int id) {
+    public int searchBookByIsbn(String isbn) {
+
+        Query q = null;
+        int bk=0;
+
+        try {
+            beginTransaction();
+           // String hql="FROM Books b where b.bid= :ID";
+            //q = getSession().createQuery(hql);//query = "SELECT * FROM Books ";
+            //q.setInteger("ID",id);
+            Criteria cr=session.createCriteria(Books.class);
+            Criterion criterion = Restrictions.eq("isbn", isbn);
+            cr.add(criterion);
+            bk =  cr.list().size();
+            System.out.println("1234" + bk);
+            commit();
+        } catch (HibernateException e) {
+            e.printStackTrace();
+            rollbackTransaction();
+        } finally {
+            close();
+        }
+        return bk;
+    }
+
+    public Books searchBookById(int bid) {
 
         Query q = null;
         Books bk=null;
 
         try {
             beginTransaction();
-            String hql="FROM Books b where b.bid= :ID";
-            q = getSession().createQuery(hql);//query = "SELECT * FROM Books ";
-            q.setInteger("ID",id);
-
-            bk = (Books) q.list().get(0);
+            // String hql="FROM Books b where b.bid= :ID";
+            //q = getSession().createQuery(hql);//query = "SELECT * FROM Books ";
+            //q.setInteger("ID",id);
+            Criteria cr=session.createCriteria(Books.class);
+            Criterion criterion = Restrictions.eq("bid", bid);
+            cr.add(criterion);
+            bk = (Books) cr.list().get(0);
 
             commit();
         } catch (HibernateException e) {
@@ -104,11 +131,14 @@ public class BooksDao {
 
         try {
             beginTransaction();
-            String hql="FROM Books b where b.categoryByCid.name= :name";
-            q = getSession().createQuery(hql);//query = "SELECT * FROM Books ";
-            q.setString("name",category);
+            Criteria cr1= session.createCriteria(Books.class);
+            Criteria cr2=cr1.createCriteria("categoryByCid");
+            cr2.add(Restrictions.eq("name",category));
+            //String hql="FROM Books b where b.categoryByCid.name= :name";
+           // q = getSession().createQuery(hql);//query = "SELECT * FROM Books ";
+           //q.setString("name",category);
 
-            bk = q.list();
+            bk = cr1.list();
 
             commit();
         } catch (HibernateException e) {

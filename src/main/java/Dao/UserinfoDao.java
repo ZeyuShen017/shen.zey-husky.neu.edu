@@ -2,11 +2,11 @@ package Dao;
 
 import Pojo.Orders;
 import Pojo.Userinfo;
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import org.hibernate.*;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.LogicalExpression;
+import org.hibernate.criterion.Restrictions;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -44,7 +44,7 @@ public class UserinfoDao {
         getSession().getTransaction().rollback();
     }
 
-    public Collection<Orders> getOrders(int id){
+    /*public Collection<Orders> getOrders(int id){
         Query q;
         Collection<Orders> bk=null;
         try {
@@ -62,7 +62,7 @@ public class UserinfoDao {
             close();
         }
         return bk;
-    }
+    }*/
 
     public List<Userinfo> getUserinfoList() {
 
@@ -72,10 +72,13 @@ public class UserinfoDao {
 
         try {
             beginTransaction();
+            Criteria cr=session.createCriteria(Userinfo.class);
 
-            q = getSession().createQuery("FROM Userinfo ");//query = "SELECT * FROM Userinfo ";
 
-            UserinfoList = q.list();
+
+            //q = getSession().createQuery("FROM Userinfo ");//query = "SELECT * FROM Userinfo ";
+
+            UserinfoList = cr.list();
 
             commit();
         } catch (HibernateException e) {
@@ -93,11 +96,14 @@ public class UserinfoDao {
 
         try {
             beginTransaction();
-            String hql="FROM Userinfo u where u.id= :ID";
-            q = getSession().createQuery(hql);//query = "SELECT * FROM Category ";
-            q.setInteger("ID",id);
+            Criteria cr=session.createCriteria(Userinfo.class);
+            Criterion criterion = Restrictions.eq("userId", id);
+            cr.add(criterion);
+            //String hql="FROM Userinfo u where u.userId= :ID";
+            //q = getSession().createQuery(hql);//query = "SELECT * FROM Category ";
+            //q.setInteger("ID",id);
 
-            usr = (Userinfo) q.list().get(0);
+            usr = (Userinfo) cr.list().get(0);
 
             commit();
         } catch (HibernateException e) {
@@ -116,11 +122,18 @@ public class UserinfoDao {
 
         try {
             beginTransaction();
-            String hql="FROM Userinfo u where u.username= :Name";
-            q = getSession().createQuery(hql);//query = "SELECT * FROM Category ";
-            q.setString("Name",name);
+            Criteria cr=session.createCriteria(Userinfo.class);
+            Criterion criterion = Restrictions.eq("username", name);
+            cr.add(criterion);
 
-            usr = (Userinfo) q.list().get(0);
+            if(cr.list().size()>0) {
+                usr = (Userinfo) cr.list().get(0);
+            }
+           // String hql="FROM Userinfo u where u.username= :Name";
+            //q = getSession().createQuery(hql);//query = "SELECT * FROM Category ";
+           // q.setString("Name",name);
+
+
 
             commit();
         } catch (HibernateException e) {
@@ -190,14 +203,22 @@ public class UserinfoDao {
 
         try {
             beginTransaction();
-            String hql="FROM Userinfo u where u.username= :Name and u.password= :Password";
-            q = getSession().createQuery(hql);//query = "SELECT * FROM Category ";
-            q.setString("Name",userinfo.getUsername());
-            q.setString("Password", userinfo.getPassword());
-            if(q.list().size()>0) {
+           // String hql="FROM Userinfo u where u.username= :Name and u.password= :Password";
+            //q = getSession().createQuery(hql);//query = "SELECT * FROM Category ";
+            //q.setString("Name",userinfo.getUsername());
+           // q.setString("Password", userinfo.getPassword());
+            Criteria cr=session.createCriteria(Userinfo.class);
+            Criterion criterion1 = Restrictions.eq("username", userinfo.getUsername());
+            Criterion criterion2 = Restrictions.eq("password", userinfo.getPassword());
+            LogicalExpression and = Restrictions.and(criterion1,criterion2);
 
-                usr = (Userinfo) q.list().get(0);
-            }
+            cr.add(and);
+
+            //usr = (Userinfo) cr.list().get(0);
+            if(cr.list().size()>0) {
+
+                usr = (Userinfo) cr.list().get(0);
+            }else
 
             commit();
         } catch (HibernateException e) {

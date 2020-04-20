@@ -16,11 +16,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import org.hibernate.*;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Restrictions;
 
 
 /**
@@ -83,9 +82,9 @@ public class CategoryDao {
         try {
             beginTransaction();
 
-            q = getSession().createQuery("FROM Category");//query = "SELECT * FROM Category ";
+            Criteria cr=session.createCriteria(Category.class);
 
-            CategoryList = q.list();
+            CategoryList = cr.list();
 
             commit();
         } catch (HibernateException e) {
@@ -103,11 +102,13 @@ public class CategoryDao {
 
         try {
             beginTransaction();
-            String hql="FROM Category c where c.cid= :ID";
-            q = getSession().createQuery(hql);//query = "SELECT * FROM Category ";
-            q.setInteger("ID",id);
-
-            ct = (Category) q.list().get(0);
+            //String hql="FROM Category c where c.cid= :ID";
+            //q = getSession().createQuery(hql);//query = "SELECT * FROM Category ";
+           // q.setInteger("ID",id);
+            Criteria cr=session.createCriteria(Category.class);
+            Criterion criterion = Restrictions.eq("cid", id);
+            cr.add(criterion);
+            ct = (Category) cr.list().get(0);
 
             commit();
         } catch (HibernateException e) {
@@ -127,11 +128,12 @@ public class CategoryDao {
 
         try {
             beginTransaction();
-            String hql="FROM Category c where c.name= :name";
-            q = getSession().createQuery(hql);//query = "SELECT * FROM Category ";
-            q.setString("name",name);
-
-            ct = (Category) q.list().get(0);
+            Criteria cr=session.createCriteria(Category.class);
+            Criterion criterion = Restrictions.eq("name", name);
+            cr.add(criterion);
+            if(cr.list().size()>0) {
+                ct = (Category) cr.list().get(0);
+            }
 
             commit();
         } catch (HibernateException e) {

@@ -2,11 +2,12 @@ package Dao;
 
 import Pojo.Orders;
 import Pojo.Userinfo;
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import org.hibernate.*;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Projection;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -44,15 +45,19 @@ public class OrderDao {
         getSession().getTransaction().rollback();
     }
 
-    public Collection<Orders> getUserOrders(int id){
+    public Collection<Orders> getUserOrders(int userid){
         Query q;
-        Collection<Orders> bk=null;
+        Collection<Orders> od=null;
         try {
             beginTransaction();
-            String hql="FROM Orders o where o.userinfoByUserId= :ID";
-            q = getSession().createQuery(hql);//query = "SELECT * FROM Category ";
-            q.setInteger("ID",id);
-            bk = q.list();
+            //String hql="FROM Orders o where o.userinfoByUserId= :ID";
+            //q = getSession().createQuery(hql);//query = "SELECT * FROM Category ";
+            //q.setInteger("ID",id);s
+            Criteria cr1=session.createCriteria(Orders.class);
+            Criteria cr2=cr1.createCriteria("userinfoByUserId");
+            //Criterion criterion = Restrictions.eq("userinfoByUserId.userid", userid);
+            cr2.add(Restrictions.eq("userId", userid));
+            od = cr1.list();
 
             commit();
         } catch (HibernateException e) {
@@ -61,21 +66,22 @@ public class OrderDao {
         } finally {
             close();
         }
-        return bk;
+        return od;
     }
 
     public List<Orders> getOrderList() {
 
         List<Orders> OrderList = new ArrayList<Orders>();
-        Query q = null;
+       // Query q = null;
 
 
         try {
             beginTransaction();
+            Criteria cr=session.createCriteria(Orders.class);
+            OrderList = cr.list();
+           // q = getSession().createQuery("FROM Orders ");//query = "SELECT * FROM Order ";
 
-            q = getSession().createQuery("FROM Orders ");//query = "SELECT * FROM Order ";
-
-            OrderList = q.list();
+           // OrderList = q.list();
 
             commit();
         } catch (HibernateException e) {
@@ -86,18 +92,21 @@ public class OrderDao {
         }
         return OrderList;
     }
-    public Orders searchOrderById(int id) {
+    public Orders searchOrderById(int oid) {
 
         Query q = null;
         Orders od=null;
 
         try {
             beginTransaction();
-            String hql="FROM Orders o where o.oId= :ID";
-            q = getSession().createQuery(hql);//query = "SELECT * FROM Category ";
-            q.setInteger("ID",id);
-
-            od = (Orders) q.list().get(0);
+            //String hql="FROM Orders o where o.oId= :ID";
+            //q = getSession().createQuery(hql);//query = "SELECT * FROM Category ";
+            //q.setInteger("ID",id);
+            Criteria cr=session.createCriteria(Orders.class);
+            Criterion criterion = Restrictions.eq("oId", oid);
+            cr.add(criterion);
+            od = (Orders) cr.list().get(0);
+            //od = (Orders) q.list().get(0);
 
             commit();
         } catch (HibernateException e) {
@@ -113,11 +122,16 @@ public class OrderDao {
         double od=0;
         try {
             beginTransaction();
-            String hql="select sum(total) from Orders";
-            q = getSession().createQuery(hql);//query = "SELECT * FROM Category ";
+           // String hql="select sum(total) from Orders";
+            //q = getSession().createQuery(hql);//query = "SELECT * FROM Category ";
             //q.setInteger("ID",id);
-
-            od = (double) q.list().get(0);
+            Criteria cr=session.createCriteria(Orders.class);
+            //Criterion criterion = Restrictions.eq("userId", userid);
+            cr.setProjection(Projections.sum("total"));
+            if(cr.list().get(0)!=null) {
+                od = (double) cr.list().get(0);
+            }
+            //od = (double) q.list().get(0);
 
             commit();
         } catch (HibernateException e) {
@@ -145,7 +159,7 @@ public class OrderDao {
         return rs;
     }
 
-    public int DeleteOrder(int id) {
+    public int DeleteOrder(long id) {
         int rs = 0;
         try {
             beginTransaction();
@@ -161,6 +175,7 @@ public class OrderDao {
         }
         return rs;
     }
+
 
     public int UpdateOrder(Orders usr) {
         int rs = 0;

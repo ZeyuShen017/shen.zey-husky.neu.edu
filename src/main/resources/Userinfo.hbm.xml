@@ -5,11 +5,19 @@
 <hibernate-mapping>
 
     <class name="Pojo.Userinfo" table="userinfo" schema="netshop">
-        <id name="userId" column="userId"/>
-        <property name="username" column="username"/>
-        <property name="password" column="password"/>
-        <property name="rright" column="Rright"/>
-        <set name="ordersByUserId" cascade="save-update,delete" inverse="true">
+        <id name="userId">
+            <column name="userId" sql-type="int"/>
+        </id>
+        <property name="username">
+            <column name="username" sql-type="varchar(30)" length="30"/>
+        </property>
+        <property name="password">
+            <column name="password" sql-type="varchar(20)" length="20"/>
+        </property>
+        <property name="rright">
+            <column name="Rright" sql-type="varchar(1)" length="1"/>
+        </property>
+        <set name="ordersByUserId" inverse="true">
             <key>
                 <column name="userId"/>
             </key>

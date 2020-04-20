@@ -1,18 +1,49 @@
 package Pojo;
 
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
 
 @Entity
+//@Table(name = "books",uniqueConstraints = {@UniqueConstraint(columnNames="ISBN")})
 public class Books {
+
     private int bid;
+    @NotEmpty(message = "title cannot be empty")
     private String title;
+    @NotNull(message = "price cannot be empty")
     private double price;
+    @NotEmpty(message = "author cannot be empty")
     private String author;
+    @NotEmpty(message = "isbn cannot be empty")
     private String isbn;
+    private String path;
+   // @NotEmpty(message = "photo cannot be empty")
+    private CommonsMultipartFile photo;
+    @NotEmpty(message = "category cannot be empty")
+    private String category;
     private Category categoryByCid;
     private Collection<OrderItem> orderItemsByBid;
+    @Basic
+    @Column(name = "path")
+    public String getPath() {
+        return path;
+    }
 
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public CommonsMultipartFile getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(CommonsMultipartFile photo) {
+        this.photo = photo;
+    }
     @Id
     @Column(name = "bid")
     public int getBid() {
@@ -110,4 +141,13 @@ public class Books {
     public void setOrderItemsByBid(Collection<OrderItem> orderItemsByBid) {
         this.orderItemsByBid = orderItemsByBid;
     }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
 }

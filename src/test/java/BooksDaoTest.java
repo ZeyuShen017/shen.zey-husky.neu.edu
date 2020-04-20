@@ -26,6 +26,11 @@ public class BooksDaoTest {
 		tx = session.beginTransaction();
 	}
 	//增加
+
+	@Test
+	public void test1234(){
+		System.out.println(new CategoryDao().searchCategoryByName("Computer"));
+	}
 	@Test
 	public void insert() {
 		Category ct= new CategoryDao().searchCategoryById(1);
@@ -41,10 +46,17 @@ public class BooksDaoTest {
 		bk.setPrice(12.99);
 		bk.setTitle("Java");
 		bk.setCategoryByCid(ct);
+		bk.setPath("123456");
 		new BooksDao().AddBook(bk);
 		tx.commit();
 	}
 	//修改
+
+	@Test
+	public void testall(){
+		System.out.println(new BooksDao().searchBookByIsbn("123456"));
+		//System.out.println(new BooksDao().searchBooksByCategory("Computer"));
+	}
 	@Test
 	public void testCId() {
 		int cid=1;

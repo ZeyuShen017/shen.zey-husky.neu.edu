@@ -5,10 +5,16 @@
 <hibernate-mapping>
 
     <class name="Pojo.Category" table="category" schema="netshop">
-        <id name="cid" column="cid"/>
-        <property name="name" column="name"/>
-        <property name="description" column="description"/>
-        <set name="booksByCid" cascade="save-update,delete" inverse="true">
+        <id name="cid">
+            <column name="cid" sql-type="int"/>
+        </id>
+        <property name="name">
+            <column name="name" sql-type="varchar(20)" length="20"/>
+        </property>
+        <property name="description">
+            <column name="description" sql-type="varchar(20)" length="20"/>
+        </property>
+        <set name="booksByCid" inverse="true">
             <key>
                 <column name="cid"/>
             </key>

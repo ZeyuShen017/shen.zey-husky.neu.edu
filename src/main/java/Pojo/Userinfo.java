@@ -1,12 +1,17 @@
 package Pojo;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
 
 @Entity
 public class Userinfo {
     private int userId;
+    @NotEmpty(message = "Username can't be null")
     private String username;
+    @NotEmpty(message = "Password can't be null")
     private String password;
     private String rright;
     private Collection<Orders> ordersByUserId;

@@ -33,6 +33,16 @@ public class orderTest {
         System.out.println(new OrderItemDao().searchOrderById(Long.parseLong("20200409032804057")));
     }
 
+    @Test
+    public void testall(){
+
+        System.out.println(new OrderItemDao().searchOrderById(Long.parseLong("20200410053333477")));//new OrderDao().getUserOrders(1));
+    }
+
+    @Test
+    public void delete(){
+        new OrderDao().DeleteOrder(Long.parseLong("20200416042847408"));
+    }
 
     //增加
     @Test

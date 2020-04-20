@@ -3,11 +3,10 @@ package Dao;
 import Pojo.OrderItem;
 import Pojo.Orders;
 import Pojo.Userinfo;
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import org.hibernate.*;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Restrictions;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -45,15 +44,18 @@ public class OrderItemDao {
         getSession().getTransaction().rollback();
     }
 
-    public Collection<OrderItem> getOrderItem(int id){
+    /*public Collection<OrderItem> getOrderItem(int id){
         Query q;
         Collection<OrderItem> OI=null;
         try {
             beginTransaction();
-            String hql="FROM OrderItem oi where oi.orderByOid= :ID";
-            q = getSession().createQuery(hql);//query = "SELECT * FROM Category ";
-            q.setInteger("ID",id);
-            OI = q.list();
+            //String hql="FROM OrderItem oi where oi.ordersByOid= :ID";
+            //q = getSession().createQuery(hql);//query = "SELECT * FROM Category ";
+           // q.setInteger("ID",id);
+            Criteria cr=session.createCriteria(OrderItem.class);
+            Criterion criterion = Restrictions.eq("oid", id);
+            cr.add(criterion);
+            OI = cr.list();
 
             commit();
         } catch (HibernateException e) {
@@ -63,7 +65,7 @@ public class OrderItemDao {
             close();
         }
         return OI;
-    }
+    }*/
 
     public List<OrderItem> getOrderList() {
 
@@ -74,9 +76,10 @@ public class OrderItemDao {
         try {
             beginTransaction();
 
-            q = getSession().createQuery("FROM OrderItem ");//query = "SELECT * FROM Order ";
+            //q = getSession().createQuery("FROM OrderItem ");//query = "SELECT * FROM Order ";
+            Criteria cr=session.createCriteria(OrderItem.class);
 
-            OrderList = q.list();
+            OrderList = cr.list();
 
             commit();
         } catch (HibernateException e) {
@@ -94,11 +97,15 @@ public class OrderItemDao {
 
         try {
             beginTransaction();
-            String hql="FROM OrderItem oi where oi.ordersByOid.oId= :ID";
-            q = getSession().createQuery(hql);//query = "SELECT * FROM Category ";
-            q.setLong("ID",oid);
+            //String hql="FROM OrderItem oi where oi.ordersByOid.oId= :ID";
+            //q = getSession().createQuery(hql);//query = "SELECT * FROM Category ";
+            //q.setLong("ID",oid);
+            Criteria cr1=session.createCriteria(OrderItem.class);
+            Criteria cr2=cr1.createCriteria("ordersByOid");
+            Criterion criterion = Restrictions.eq("oId", oid);
+            cr2.add(criterion);
 
-            oi = q.list();
+            oi = cr1.list();
 
             commit();
         } catch (HibernateException e) {

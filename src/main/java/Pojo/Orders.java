@@ -2,6 +2,8 @@ package Pojo;
 
 
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.persistence.*;
 import java.util.Collection;
 
@@ -11,7 +13,9 @@ import java.util.Collection;
 @Entity
 public class Orders {
     private long oId;
+    @NotEmpty(message = "zipcode cannot be empty")
     private String zipcode;
+    @NotEmpty(message = "address cannot be empty")
     private String address;
     private double total;
     private Collection<OrderItem> orderItemsByOId;
@@ -102,4 +106,6 @@ public class Orders {
     public void setUserinfoByUserId(Userinfo userinfoByUserId) {
         this.userinfoByUserId = userinfoByUserId;
     }
+
+
 }

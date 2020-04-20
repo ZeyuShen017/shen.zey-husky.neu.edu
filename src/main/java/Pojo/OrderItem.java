@@ -4,15 +4,16 @@ import javax.persistence.*;
 
 @Entity
 public class OrderItem {
+    @Id
+    @GeneratedValue(strategy=GenerationType.TABLE,generator="tableGenerator")
+    @TableGenerator(name="tableGenerator",initialValue=0,allocationSize=1)
     private int itemId;
     private int quantity;
     private Books booksByBid;
     private Orders ordersByOid;
 
-    @Id
-    @Column(name = "itemId")
-    @GeneratedValue(strategy = GenerationType.AUTO)
 
+    @Column(name = "itemId")
     public int getItemId() {
         return itemId;
     }

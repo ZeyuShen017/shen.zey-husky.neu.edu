@@ -5,14 +5,22 @@
 <hibernate-mapping>
 
     <class name="Pojo.Orders" table="orders" schema="netshop">
-        <id name="oId" column="oId"/>
-        <property name="zipcode" column="zipcode"/>
-        <property name="address" column="address"/>
-        <property name="total" column="total"/>
-        <many-to-one name="userinfoByUserId" class="Pojo.Userinfo">
+        <id name="oId">
+            <column name="oId" sql-type="bigint"/>
+        </id>
+        <property name="zipcode">
+            <column name="zipcode" sql-type="varchar(10)" length="10"/>
+        </property>
+        <property name="address">
+            <column name="address" sql-type="varchar(100)" length="100"/>
+        </property>
+        <property name="total">
+            <column name="total" sql-type="double" precision="-1"/>
+        </property>
+        <many-to-one name="userinfoByUserId" lazy="false" class="Pojo.Userinfo">
             <column name="userId"/>
         </many-to-one>
-        <set name="orderItemsByOId"  cascade="save-update,delete" inverse="true">
+        <set name="orderItemsByOId" cascade="save-update,delete" inverse="true">
             <key>
                 <column name="oid"/>
             </key>

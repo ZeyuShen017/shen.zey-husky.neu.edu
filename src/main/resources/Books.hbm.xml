@@ -5,15 +5,28 @@
 <hibernate-mapping>
 
     <class name="Pojo.Books" table="books" schema="netshop">
-        <id name="bid" column="bid"/>
-        <property name="title" column="title"/>
-        <property name="price" column="price"/>
-        <property name="author" column="author"/>
-        <property name="isbn" column="ISBN"/>
-        <many-to-one name="categoryByCid" class="Pojo.Category">
+        <id name="bid">
+            <column name="bid" sql-type="int"/>
+        </id>
+        <property name="title">
+            <column name="title" sql-type="varchar(20)" length="20"/>
+        </property>
+        <property name="price">
+            <column name="price" sql-type="double" precision="-1"/>
+        </property>
+        <property name="author">
+            <column name="author" sql-type="varchar(20)" length="20"/>
+        </property>
+        <property name="isbn">
+            <column name="ISBN" sql-type="varchar(20)" length="20" />
+        </property>
+        <property name="path">
+            <column name="path" sql-type="varchar(100)" length="100" />
+        </property>
+        <many-to-one name="categoryByCid" lazy="false" class="Pojo.Category">
             <column name="cid"/>
         </many-to-one>
-        <set name="orderItemsByBid" cascade="save-update,delete" inverse="true">
+        <set name="orderItemsByBid" cascade="save-update" inverse="true">
             <key>
                 <column name="bid"/>
             </key>
